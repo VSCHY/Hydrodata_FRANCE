@@ -1,0 +1,7 @@
+./shapefile/wmo*
+./__pycache__/*
+./OUTPUT/*.csv
+./META/*.csv
+./*.nc
+./geckodriver.log
+./test.py
