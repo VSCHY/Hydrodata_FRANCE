@@ -1,3 +1,13 @@
+
+"""
+This script is used to download the stations and their Metadata from each group of basins
+
+Environment : 
+conda create -n HydroFR -c conda-forge selenium geckodriver pandas requests lxml pyproj psutil
+conda activate HydroFR
+"""
+##########
+# LIBRARY
 import requests      
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -9,12 +19,16 @@ import glob
 import os
 
 import time
+
 ###################
 
 class website:
+   """
+   Class used to manage the website.
+   """
    def __init__(self, dir_out):
       """
-      
+      Initialization
       """
       # Create output dir if necessary
       self.rech = 0
@@ -27,6 +41,11 @@ class website:
       #
       
    def get_discharge_from_basins(self, dfile):
+      """
+      Get the discharge for all the stations contained in the 
+      metadata file (dfile).
+      1 station = 1 csv file
+      """
       df = pd.read_csv(dfile, sep = ";", index_col=0)
       index=df.index
 
@@ -42,13 +61,13 @@ class website:
       
    def close(self):
       """
-         # CLOSE THE WEBDRIVER
+      CLOSE THE WEBDRIVER: to implement ! 
       """
       pass
 
    def initialization(self):
       """
-      
+      Initilization of the webpage.
       """
       fp= webdriver.FirefoxProfile() 
       fp.set_preference("browser.download.folderList", 2)
@@ -72,11 +91,9 @@ class website:
       # 
       self.wait_load_items('/html/body/div/div[4]/form/input[3]', "xpath")
 
-
-
    def get_stations(self, stid):
       """
-      
+      Go from main page to the discharge webpage ! 
       """
       self.exScript('document.getElementById("code_station").value = "{0}"'.format(stid))
       # 
@@ -123,6 +140,9 @@ class website:
       return D
       
    def get_discharge(self):   
+      """
+      Get the full discharge data.
+      """
       D = {}
       #
       table = self.driver.find_element_by_xpath("/html/body/div/div[4]/div[3]/table")
@@ -136,22 +156,24 @@ class website:
          D.update(dis)
          
       serie = pd.Series(D)
-      #pd.to_datetime(df.)
-
       return serie
         
-      # Set the dataframe
 
    def get_disval(self, d):
-      
+      """
+      Get discharge value for a month.
+      """      
       d1 = d.find_elements(By.TAG_NAME, "input")[5]
       value = d1.get_attribute("value")
       value = float(value.replace("-", "NaN"))
       return value
 
-   ##########################################################      
+   #############     
 
    def wait_page_loaded(self):
+      """
+      Wait for webpage to load.
+      """
       page_state = ""
       time.sleep(2)
       while page_state != "complete":
@@ -159,14 +181,14 @@ class website:
           time.sleep(3)
       time.sleep(1)
 
-
    def page_has_loaded(self):
       self.log.info("Checking if {} page is loaded.".format(self.driver.current_url))
-
       return page_state == 'complete'
-
       
    def nouvelleRecherche(self):
+      """
+      New search, depends if first station of not.
+      """
       if self.rech == 0:
          self.exScript('document.querySelector("#content > form > input.submit")')
          self.rech = 1
@@ -209,17 +231,18 @@ class website:
             print("Blocked in loop")
             sys.exit()      
 
-################################
 
+###################
 
-dir_out = "./OUTPUT/"
-# Get the list of stations from dataframe -> do not consider dispo = "non disponible"
-w = website(dir_out)
-dMETA = "/home/anthony/Documents/LOCAL/HydroFrance/META/"
+if __name__ == "__main__":
+   dir_out = "./OUTPUT/"
+   # Get the list of stations from dataframe -> do not consider dispo = "non disponible"
+   w = website(dir_out)
+   dMETA = "/home/anthony/Documents/LOCAL/HydroFrance/META/"
 
-L_bassins = glob.glob(dMETA + "BASSIN*")
+   L_bassins = glob.glob(dMETA + "BASSIN*")
 
-for dfile in L_bassins:
-   print("**", dfile.split("/")[-1].split(".csv")[0], "**")
-   w.get_discharge_from_basins(dfile)
+   for dfile in L_bassins:
+      print("**", dfile.split("/")[-1].split(".csv")[0], "**")
+      w.get_discharge_from_basins(dfile)
 
