@@ -1,0 +1,44 @@
+###############
+#   ERREURS   #
+###############
+
+-----------------------------
+
+ID: K1130020
+NOM:  L'Arconce à Mornay
+x,y: 7400449 2169131
+lon, lat: 68.77996973785379 19.875782901677443
+
+Correction possible-> 740449 2169131 (0 en trop), cela semble donner une location proche de la ville de Mornay
+
+-----------------------------
+-----------------------------
+
+Les cas suivants sont tous issus du même bassin (la loire de la vienne (c) à la maine (nc)) et ont tout un problème concernant la valeur de y.
+Cette valeur estde l'ordre de 6600000 alors que les autres stations des mêmes bassins ont des valeurs de y de l'ordre de 2000000 
+
+ID: L8122125
+NOM: Le Thouet à Saint-Loup-Lamairé [Boussin]
+x,y: 457981 6634179
+lon, lat: -4.778789991887022 82.79907990006255
+
+-----------------------------
+
+ID: L5741915
+NOM: L'Anglin à Angles-sur-l'Anglin
+x,y: 538127 6623683
+lon, lat: -0.7513194139378704 82.76598997730062
+
+-----------------------------
+
+ID: L2201620
+NOM: Le Clain à Voulon [Petit Allier]
+x,y: 488776 6590164
+lon, lat: -3.0903161704441064 82.53815728131684
+
+----------------------------- 
+
+ID: L1313010
+NOM: La Grande Blourde à Persac
+x,y 523505 6581831
+lon, lat: -1.3806430271164214 82.49826381788834
