@@ -100,6 +100,7 @@ class netcdf_output:
     #
     self.WMO = WMOREG(dWMOfile)
     self.date = np.array([datetime(1807+i//12,i%12+1,15) for i in range(0,214*12)])
+    self.time_unit = "seconds since 1807-01-15 00:00:00"
     self.date_nc = [date2num(d,"seconds since 1807-01-15 00:00:00", calendar = "gregorian") for d in self.date]
     #
     self.test_locations(dMETA)
@@ -134,6 +135,11 @@ class netcdf_output:
         elif (numst in self.exclude):
           print(numst, "Wrong lon / lat")
           st -=1
+        name = txt_without_accent(dfmeta.loc[numst].loc['name']).replace("_"," ")
+        if "Salles" in name: 
+           
+           print("here", dfile) 
+           
     return st
   #
   def init_netcdf(self, dncout):
@@ -158,8 +164,16 @@ class netcdf_output:
         newvar = self.nc.createVariable(varn, ovar.dtype, ovar.dimensions, zlib = True)
       for attrn in ovar.ncattrs():
         if attrn != "_FillValue":
-          attrv = ovar.getncattr(attrn)
-          newvar.setncattr(attrn,attrv)
+          if varn == "time":
+            if attrn == "units":
+              newvar.setncattr(attrn,self.time_unit)
+            else:
+              attrv = ovar.getncattr(attrn)
+              newvar.setncattr(attrn,attrv)
+          else:
+            attrv = ovar.getncattr(attrn)
+            newvar.setncattr(attrn,attrv)
+      
       self.nc.variables["time"][:] = self.date_nc[:]
     # First "free" index for the stations
     self.free_index = 0
@@ -252,7 +266,7 @@ if __name__ == "__main__":
   # Output file
   dncout = "./hydrofrance_Discharge_2020.nc"
   # Where is GRDC (this version no older version)
-  dir_grdc = "/home/anthony/Documents/LOCAL/DISCHARGE_DATABASE_V1/Originals/GRDC_Monthly_Jan20_v1.nc"
+  dir_grdc = "../Originals/GRDC_Monthly_Jan20_v1.1.nc"
   check_WMOfile(dWMOfile)
 
   # There are some wrong lon / lat in the metadata file -> wrong in the webpage

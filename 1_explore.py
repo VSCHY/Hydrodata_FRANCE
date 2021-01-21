@@ -107,7 +107,7 @@ class website:
       while page_state != "complete":
           page_state = self.driver.execute_script('return document.readyState;')
           time.sleep(2)
-      time.sleep(1)
+      time.sleep(3)
       try:
          self.get_stations_id(basinValue)
       except:
@@ -241,6 +241,11 @@ if __name__ == "__main__":
       # It used to stop in the middle of a basin, relaunch each time ..
       if not os.path.exists(dir_out+"BASSIN_{0}.csv".format(nbas)):
          w.extract_basin(nbas)
+   # 
+   # Attention, certains fichiers peuvent être identiques
+   # Le changement d'option de bassin n'a pas le temps d'être pris en compte
+   # J'ai ajouté du temps mais besoin de vérifier
+
 
 
 

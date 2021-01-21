@@ -238,7 +238,7 @@ if __name__ == "__main__":
    dir_out = "./OUTPUT/"
    # Get the list of stations from dataframe -> do not consider dispo = "non disponible"
    w = website(dir_out)
-   dMETA = "/home/anthony/Documents/LOCAL/HydroFrance/META/"
+   dMETA = "./META/"
 
    L_bassins = glob.glob(dMETA + "BASSIN*")
 
