@@ -1,3 +1,15 @@
+#################
+#   Exclusion   #
+#################
+
+Lempdes : 2 stations very close (K2593010,K2593011).
+One is more recent, the discharge are similar.
+keep the one with more data (K2593010)
+
+Carcassonne : 2 stations very close (Y1232010,Y1232020).
+One is more recent, the discharge are similar.
+keep the one with more data (Y1232010)
+
 ###############
 #   ERREURS   #
 ###############

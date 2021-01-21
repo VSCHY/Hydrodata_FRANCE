@@ -135,11 +135,16 @@ class netcdf_output:
         elif (numst in self.exclude):
           print(numst, "Wrong lon / lat")
           st -=1
-        name = txt_without_accent(dfmeta.loc[numst].loc['name']).replace("_"," ")
-        if "Salles" in name: 
-           
-           print("here", dfile) 
-           
+        elif (numst in ["Y1232020", "K2593011"]):
+          # In Carcassonne there are 2 stations very close
+          # we keep the one with more data (delete -> Y1232020, Y1232010)
+          # In Lempbdes there are 2 stations very close
+          # we keep the one with more data (delete -> K2593011, K2593010)
+          print(numst, "Station not considered")
+          st -=1
+    self.exclude += ["Y1232020", "K2593011"]
+        #name = txt_without_accent(dfmeta.loc[numst].loc['name']).replace("_"," ")
+        
     return st
   #
   def init_netcdf(self, dncout):
