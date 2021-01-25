@@ -55,7 +55,15 @@ def txt_without_accent(text):
 def get_info_st(A,last_date):
     D = {}
     #print(A.loc['name'])#.values 
-    D["name"] = txt_without_accent(A.loc['name']).replace("_"," ")
+    name = A.loc['name']
+    k = name.find(" à ")
+    m = name.find(" au ")
+    if k >0:
+       name = name[k+3:]
+    elif m>0:
+       name = name[m+4:]
+
+    D["name"] = txt_without_accent(name).replace("_"," ")
     D["altitude"] = A.loc['altitude']
     #
     D["river"] = txt_without_accent(A.loc['river']).replace("_"," ")
