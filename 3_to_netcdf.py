@@ -173,6 +173,8 @@ class netcdf_output:
         ovar = self.grdc.variables[varn]
       if varn in ["time", "hydrographs", "mergedhydro" ]:
         newvar = self.nc.createVariable(varn, ovar.dtype, ovar.dimensions, zlib = True, fill_value=self.FillValue)
+      elif varn == "area":
+        newvar = self.nc.createVariable(varn, ovar.dtype, ovar.dimensions, zlib = True, fill_value=-999)
       else:      
         newvar = self.nc.createVariable(varn, ovar.dtype, ovar.dimensions, zlib = True)
       for attrn in ovar.ncattrs():
@@ -218,14 +220,18 @@ class netcdf_output:
       self.nc.variables[varn][self.free_index,:] = stringtochar(np.array(D[varn], dtype ="S60"))[:]
     # NUMERICAL VARIABLE
     for varn in self.L_varfloat:
-      self.nc.variables[varn][self.free_index] = D[varn]
+      if (varn == "area") and (D[varn]<0):
+         self.nc.variables[varn][self.free_index] = -999
+      else:
+         self.nc.variables[varn][self.free_index] = D[varn]
     # CODE
     self.nc.variables["number"][self.free_index] = stcode
       
-    for varn in ["hydrographs"]:
-      hydro = np.full(len(self.date_nc), self.FillValue)
-      hydro[:] = data.to_numpy()[:,0]
-      self.nc.variables[varn][:,self.free_index] = hydro[:]
+
+    hydro = np.full(len(self.date_nc), self.FillValue)
+    hydro[:] = data.to_numpy()[:,0]
+    self.nc.variables["hydrographs"][:,self.free_index] = hydro[:]
+    self.nc.variables["mergedhydro"][:,self.free_index] = hydro[:]
     self.free_index +=1
   #
   def get_stcode(self, wmo, stReg, stSubreg):
