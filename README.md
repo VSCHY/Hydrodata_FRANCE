@@ -1,6 +1,12 @@
 # Hydrodata_FRANCE
 Get discharge from the French hydrodata portal.
 
+<p align="center">
+<img src="https://images.unsplash.com/photo-1584109504427-f9b960c94cdb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80" width="60%"/>
+</p>
+
+
+
 ## Installation
 The following commands line must be entered in the terminal
 
